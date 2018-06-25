@@ -10,6 +10,10 @@ namespace ConsoleGolad
     {
         static void Main(string[] args)
         {
+            Game game = new Game(10, 10, new Player(), new Player());
+
+            game.StartGame();
+
             Console.ReadKey();
         }
     }
