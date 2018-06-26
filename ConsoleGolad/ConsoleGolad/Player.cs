@@ -13,6 +13,7 @@ namespace ConsoleGolad
 
         public PlayerColor playerColor;
         public bool isAI;
+        public float penalty = 1f; 
 
         public Game game;
 
@@ -43,11 +44,21 @@ namespace ConsoleGolad
 
             Cell theChosenOne = (Cell) aliveCells[rnd.Next(aliveCells.Count)];
 
+            Console.WriteLine(theChosenOne.x + " " + theChosenOne.y);
+
             bool finished = theChosenOne.OnCellTap();
             if (!finished)
                 PlayTurn();
             else
                 game.FinishMove();
+        }
+
+        public bool shouldBePunished()
+        {
+            if (rnd.NextDouble() < penalty)
+                return false;
+
+            return true;
         }
     }
 }
