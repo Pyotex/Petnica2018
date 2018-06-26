@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleGolad
 {
-    class AttackPlayer : Player
+    class AttackPlayer : Player // Only kills enemy cells
     {
 
         public AttackPlayer(PlayerColor color) : base(color)
@@ -17,9 +17,6 @@ namespace ConsoleGolad
 
         public override void PlayTurn()
         {
-            if (game.gameOver)
-                return;
-
             ArrayList aliveCells = new ArrayList();
 
             foreach (Cell cell in game.cells)
@@ -38,19 +35,9 @@ namespace ConsoleGolad
 
             }
 
-            Cell theChosenOne = (Cell)aliveCells[game.rnd.Next(aliveCells.Count)];
+            theChosenOne = (Cell)aliveCells[game.rnd.Next(aliveCells.Count)];
 
-            if (Cell.CellAlive(theChosenOne.cellState))
-            {
-                turns++;
-                penalty = Math.Max(0.75f, penalty - turns / 100f);
-            }
-
-            bool finished = theChosenOne.OnCellTap();
-            if (!finished)
-                PlayTurn();
-            else
-                game.FinishMove();
+            base.PlayTurn();
         }
 
     }

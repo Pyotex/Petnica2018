@@ -12,11 +12,11 @@ namespace ConsoleGolad
         public enum PlayerColor { RED, BLUE }
 
         public PlayerColor playerColor;
-        public bool isAI;
         public float penalty = 1f;
         protected float turns = 0;
 
         public Game game;
+        protected Cell theChosenOne;
 
         public Player(PlayerColor color)
         {
@@ -28,14 +28,6 @@ namespace ConsoleGolad
             if (game.gameOver)
                 return;
 
-            ArrayList aliveCells = new ArrayList();
-
-            foreach (Cell cell in game.cells)
-                if (cell.cellState == Cell.CellState.RED || cell.cellState == Cell.CellState.BLUE)
-                    aliveCells.Add(cell);
-
-            Cell theChosenOne = (Cell) aliveCells[game.rnd.Next(aliveCells.Count)];
-
             if (Cell.CellAlive(theChosenOne.cellState))
             {
                 turns++;
@@ -43,9 +35,9 @@ namespace ConsoleGolad
             }
             
             bool finished = theChosenOne.OnCellTap();
-            if (!finished)
-                PlayTurn();
-            else
+            //if (!finished)
+            //    PlayTurn();
+            //else
                 game.FinishMove();
         }
 

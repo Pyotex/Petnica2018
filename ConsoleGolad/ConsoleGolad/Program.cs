@@ -14,11 +14,24 @@ namespace ConsoleGolad
         {
             rnd = new Random((Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds);
 
-            for (int i = 0; i < 150; i++)
+            int blueWins = 0;
+            int redWins = 0;
+            int draws = 0;
+
+            for (int i = 0; i < 1000; i++)
             {
-                Game game = new Game(10, 10, new AttackPlayer(Player.PlayerColor.RED), new Player(Player.PlayerColor.BLUE), rnd);
+                Game game = new Game(10, 10, new AttackPlayer(Player.PlayerColor.RED), new RandomPlayer(Player.PlayerColor.BLUE), rnd);
                 game.StartGame();
+
+                if (game.blueCells == 0 && game.redCells == 0)
+                    draws++;
+                else if (game.blueCells == 0)
+                    redWins++;
+                else if (game.redCells == 0)
+                    blueWins++;
             }
+
+            Console.WriteLine("Blue wins: " + blueWins + " , red wins: " + redWins + " , draws: " + draws);
 
             Console.ReadKey();
         }

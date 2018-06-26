@@ -46,7 +46,6 @@ namespace ConsoleGolad
         {
             SpawnCells();
             CalculateNextForAllCells();
-            CheckGameStatus();
 
             currentPlayer.PlayTurn();
         }
@@ -95,17 +94,18 @@ namespace ConsoleGolad
 
         public void FinishMove()
         {
-            if (gameOver)
-                return;
-
             PrintCellGrid();
-            Thread.Sleep(16);
+            //Thread.Sleep(16);
 
             currentPlayer = currentPlayer == redPlayer ? bluePlayer : redPlayer;
 
             finishedMove = false;
 
             NextStep();
+
+            if (gameOver)
+                return;
+
             currentPlayer.PlayTurn();
         }
 

@@ -30,7 +30,7 @@ namespace ConsoleGolad
 
         public bool OnCellTap()
         {
-            if (game.finishedMove || game.gameOver || game.currentPlayer.isAI)
+            if (game.finishedMove || game.gameOver)
                 return false;
 
             //Disable clicking on cells that will be born in the next turn
