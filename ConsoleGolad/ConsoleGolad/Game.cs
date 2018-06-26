@@ -24,10 +24,12 @@ namespace ConsoleGolad
         public int redCells = 0;
         public int blueCells = 0;
 
-        private Random rnd = new Random();
+        private Random rnd;
 
         public Game(int rows, int columns, Player redPlayer, Player bluePlayer)
         {
+            rnd = new Random((Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds);
+
             this.rows = rows;
             this.columns = columns;
             this.redPlayer = redPlayer;
@@ -88,6 +90,8 @@ namespace ConsoleGolad
 
                 newRow++;
             }
+
+            PrintCellGrid();
         }
 
         public void FinishMove()
@@ -96,7 +100,7 @@ namespace ConsoleGolad
                 return;
 
             PrintCellGrid();
-            Thread.Sleep(500);
+            //Thread.Sleep(500);
 
             currentPlayer = currentPlayer == redPlayer ? bluePlayer : redPlayer;
 

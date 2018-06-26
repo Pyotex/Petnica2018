@@ -17,7 +17,13 @@ namespace ConsoleGolad
 
         public Game game;
 
-        private Random rnd = new Random();
+        private Random rnd;
+
+        public Player(PlayerColor color)
+        {
+            playerColor = color;
+            rnd = new Random((Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds);
+        }
 
         public virtual void PlayTurn()
         {
