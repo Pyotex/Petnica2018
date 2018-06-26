@@ -54,7 +54,7 @@ namespace ConsoleGolad
                     game.finishedMove = true;
                 }
 
-                else if (TurnMatchesColor(color, state))
+                else if (Game.TurnMatchesColor(color, state))
                 {
                     cellState = CellState.DEAD;
 
@@ -111,37 +111,7 @@ namespace ConsoleGolad
             cellState = nextCellState;
         }
 
-        public void CalculateNextState()
-        {
-            int[] neighbourValues = GetNeighbourCount();
-
-            int red = neighbourValues[0];
-            int blue = neighbourValues[1];
-            int neighbours = neighbourValues[2];
-
-            if (CellAlive(cellState))
-            {
-                if (neighbours > 3 || neighbours < 2)
-                    nextCellState = CellState.DEAD;
-                else
-                    nextCellState = cellState;
-            }
-
-            else
-            {
-                if (neighbours == 3)
-                {
-                    if (red > blue)
-                        nextCellState = CellState.RED;
-                    else
-                        nextCellState = CellState.BLUE;
-                }
-                else
-                    nextCellState = CellState.DEAD;
-            }
-        }
-
-        private int[] GetNeighbourCount()
+        public int[] GetNeighbourCount()
         {
             int red = 0;
             int blue = 0;
@@ -168,24 +138,12 @@ namespace ConsoleGolad
             return new int[] { red, blue, neighbours };
         }
 
-        public bool CellAlive(CellState state)
+        public static bool CellAlive(CellState state)
         {
             if (state == CellState.BLUE || state == CellState.RED)
                 return true;
 
             return false;
         }
-
-        public bool TurnMatchesColor(Player.PlayerColor color, CellState state)
-        {
-            if (color == Player.PlayerColor.BLUE && state == CellState.BLUE)
-                return true;
-
-            if (color == Player.PlayerColor.RED && state == CellState.RED)
-                return true;
-
-            return false;
-        }
-
     }
 }

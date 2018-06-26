@@ -49,9 +49,7 @@ namespace ConsoleGolad
             }
 
             Cell theChosenOne = (Cell) aliveCells[rnd.Next(aliveCells.Count)];
-
-            Console.WriteLine(theChosenOne.x + " " + theChosenOne.y);
-
+            
             bool finished = theChosenOne.OnCellTap();
             if (!finished)
                 PlayTurn();

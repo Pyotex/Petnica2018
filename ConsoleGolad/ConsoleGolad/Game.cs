@@ -144,7 +144,37 @@ namespace ConsoleGolad
         public void CalculateNextForAllCells()
         {
             foreach (Cell cell in cells)
-                cell.CalculateNextState();
+                CalculateNextState(cell);
+        }
+
+        public void CalculateNextState(Cell cell)
+        {
+            int[] neighbourValues = cell.GetNeighbourCount();
+
+            int red = neighbourValues[0];
+            int blue = neighbourValues[1];
+            int neighbours = neighbourValues[2];
+
+            if (Cell.CellAlive(cell.cellState))
+            {
+                if (neighbours > 3 || neighbours < 2)
+                    cell.nextCellState = Cell.CellState.DEAD;
+                else
+                    cell.nextCellState = cell.cellState;
+            }
+
+            else
+            {
+                if (neighbours == 3)
+                {
+                    if (red > blue)
+                        cell.nextCellState = Cell.CellState.RED;
+                    else
+                        cell.nextCellState = Cell.CellState.BLUE;
+                }
+                else
+                    cell.nextCellState = Cell.CellState.DEAD;
+            }
         }
 
         Cell.CellState RandomState()
@@ -168,6 +198,17 @@ namespace ConsoleGolad
                 return Cell.CellState.BLUE;
 
             return Cell.CellState.DEAD;
+        }
+
+        public static bool TurnMatchesColor(Player.PlayerColor color, Cell.CellState state)
+        {
+            if (color == Player.PlayerColor.BLUE && state == Cell.CellState.BLUE)
+                return true;
+
+            if (color == Player.PlayerColor.RED && state == Cell.CellState.RED)
+                return true;
+
+            return false;
         }
 
         public void GameOver()
