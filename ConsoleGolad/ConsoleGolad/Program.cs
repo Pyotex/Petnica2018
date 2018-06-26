@@ -16,7 +16,7 @@ namespace ConsoleGolad
 
             for (int i = 0; i < 150; i++)
             {
-                Game game = new Game(10, 10, new Player(Player.PlayerColor.RED), new Player(Player.PlayerColor.BLUE), rnd);
+                Game game = new Game(10, 10, new AttackPlayer(Player.PlayerColor.RED), new Player(Player.PlayerColor.BLUE), rnd);
                 game.StartGame();
             }
 
