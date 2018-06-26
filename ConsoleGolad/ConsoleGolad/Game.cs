@@ -24,16 +24,15 @@ namespace ConsoleGolad
         public int redCells = 0;
         public int blueCells = 0;
 
-        private Random rnd;
+        public Random rnd;
 
-        public Game(int rows, int columns, Player redPlayer, Player bluePlayer)
+        public Game(int rows, int columns, Player redPlayer, Player bluePlayer, Random rnd)
         {
-            rnd = new Random((Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds);
-
             this.rows = rows;
             this.columns = columns;
             this.redPlayer = redPlayer;
             this.bluePlayer = bluePlayer;
+            this.rnd = rnd;
 
             this.redPlayer.game = this;
             this.bluePlayer.game = this;
@@ -100,7 +99,7 @@ namespace ConsoleGolad
                 return;
 
             PrintCellGrid();
-            //Thread.Sleep(500);
+            Thread.Sleep(16);
 
             currentPlayer = currentPlayer == redPlayer ? bluePlayer : redPlayer;
 
@@ -160,7 +159,12 @@ namespace ConsoleGolad
                 if (neighbours > 3 || neighbours < 2)
                     cell.nextCellState = Cell.CellState.DEAD;
                 else
-                    cell.nextCellState = cell.cellState;
+                {
+                    if (currentPlayer.shouldBePunished() && TurnMatchesColor(currentPlayer.playerColor, cell.cellState))
+                        cell.nextCellState = Cell.CellState.DEAD;
+                    else
+                        cell.nextCellState = cell.cellState;
+                }
             }
 
             else
@@ -236,6 +240,7 @@ namespace ConsoleGolad
 
         public void PrintCellGrid()
         {
+            return;
             Console.Clear();
 
             for (int i = 0; i < rows; i++)

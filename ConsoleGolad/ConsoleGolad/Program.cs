@@ -8,11 +8,17 @@ namespace ConsoleGolad
 {
     class Program
     {
+        public static Random rnd;
+
         static void Main(string[] args)
         {
-            Game game = new Game(10, 10, new Player(Player.PlayerColor.RED), new Player(Player.PlayerColor.BLUE));
+            rnd = new Random((Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds);
 
-            game.StartGame();
+            for (int i = 0; i < 150; i++)
+            {
+                Game game = new Game(10, 10, new Player(Player.PlayerColor.RED), new Player(Player.PlayerColor.BLUE), rnd);
+                game.StartGame();
+            }
 
             Console.ReadKey();
         }
