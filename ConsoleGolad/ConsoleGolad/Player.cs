@@ -35,9 +35,9 @@ namespace ConsoleGolad
             }
 
             bool finished = theChosenOne.OnCellTap();
-            //if (!finished)
-            //    PlayTurn();
-            //else
+            theChosenOne = null;
+
+            if (finished)
                 game.FinishMove();
         }
 

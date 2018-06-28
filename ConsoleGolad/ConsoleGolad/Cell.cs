@@ -145,5 +145,13 @@ namespace ConsoleGolad
 
             return false;
         }
+
+        public static bool CanClick(Cell cell)
+        {
+            if (cell.cellState == CellState.DEAD && cell.nextCellState != CellState.DEAD)
+                return false;
+
+            return true;
+        }
     }
 }

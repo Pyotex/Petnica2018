@@ -18,7 +18,7 @@ namespace ConsoleGolad
             int redWins = 0;
             int draws = 0;
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 100; i++)
             {
                 Game game = new Game(10, 10, new RndAttackPlayer(Player.PlayerColor.RED), new RandomPlayer(Player.PlayerColor.BLUE), rnd);
                 game.StartGame();

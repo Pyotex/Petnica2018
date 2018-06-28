@@ -17,15 +17,36 @@ namespace ConsoleGolad
 
         public override void PlayTurn()
         {
-            ArrayList aliveCells = new ArrayList();
+            ArrayList myAliveCells = new ArrayList();
 
             foreach (Cell cell in game.cells)
-                if (cell.cellState == Cell.CellState.RED || cell.cellState == Cell.CellState.BLUE)
-                    aliveCells.Add(cell);
+                if (Game.TurnMatchesColor(playerColor, cell.cellState))
+                    myAliveCells.Add(cell);
 
-            theChosenOne = (Cell)aliveCells[game.rnd.Next(aliveCells.Count)];
+            do
+            {
+                theChosenOne = game.cells[game.rnd.Next(game.rows - 1), game.rnd.Next(game.columns - 1)];
+            } while (!Cell.CanClick(theChosenOne) || (Cell.CellAlive(theChosenOne.cellState) ? false : myAliveCells.Count < 2));
 
-            base.PlayTurn();
+            if (Cell.CellAlive(theChosenOne.cellState))
+                base.PlayTurn();
+            else if (!Cell.CellAlive(theChosenOne.cellState) && theChosenOne.nextCellState == Cell.CellState.DEAD)
+            {
+                // Press the dead cell to sacrifice
+                base.PlayTurn();
+
+                theChosenOne = (Cell) myAliveCells[game.rnd.Next(myAliveCells.Count)];
+                myAliveCells.Remove(theChosenOne);
+
+                base.PlayTurn();
+
+                theChosenOne = (Cell)myAliveCells[game.rnd.Next(myAliveCells.Count)];
+                myAliveCells.Remove(theChosenOne);
+
+                base.PlayTurn();
+            }
+            else
+                base.PlayTurn();
         }
     }
 }
