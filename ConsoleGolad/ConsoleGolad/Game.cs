@@ -228,7 +228,7 @@ namespace ConsoleGolad
             PrintCellGrid();
 
             gameOver = true;
-            Console.WriteLine("It's a draw!");
+            //Console.WriteLine("It's a draw!");
         }
 
         public void GameOver(Player.PlayerColor color)
@@ -238,11 +238,11 @@ namespace ConsoleGolad
             gameOver = true;
             if (color == Player.PlayerColor.BLUE)
             {
-                Console.WriteLine("Blue player won!");
+                //Console.WriteLine("Blue player won!");
             }
             else
             {
-                Console.WriteLine("Red player won!");
+                //Console.WriteLine("Red player won!");
             }
         }
 

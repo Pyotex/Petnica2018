@@ -28,22 +28,33 @@ namespace ConsoleGolad
             if (game.gameOver)
                 return;
 
-            if (Cell.CellAlive(theChosenOne.cellState) && !game.sacrifice)
+            if (theChosenOne != null)
             {
-                penaltyTurns++;
-                penalty = Math.Max(0.75f, penalty - penaltyTurns / 100f);
+                if (Cell.CellAlive(theChosenOne.cellState) && !game.sacrifice)
+                {
+                    penaltyTurns++;
+                    penalty = Math.Max(Program.minPenalty, penalty - penaltyTurns / 10f);
+                }
+                else
+                {
+                    penaltyTurns = 0;
+                    penalty = 1f;
+                }
+
+                bool finished = theChosenOne.OnCellTap();
+                theChosenOne = null;
+
+                if (finished)
+                    game.FinishMove();
             }
             else
             {
-                penaltyTurns = 0;
-                penalty = 1f;
-            }
+                penaltyTurns++;
+                penalty = Math.Max(Program.minPenalty, penalty - penaltyTurns / 10f);
 
-            bool finished = theChosenOne.OnCellTap();
-            theChosenOne = null;
-
-            if (finished)
                 game.FinishMove();
+            }
+                
         }
 
         public bool shouldBePunished()

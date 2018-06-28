@@ -10,8 +10,9 @@ namespace ConsoleGolad
     {
         public static Random rnd;
 
-        public static int simNumber = 100000;
-        public static bool penaltyActive = true;
+        public static int simNumber = 10000;
+        public static float minPenalty = 0.25f;
+        public static bool penaltyActive = false;
         public static bool randomActive = true;
         public static bool printCellGrid = false;
 
@@ -25,7 +26,7 @@ namespace ConsoleGolad
 
             for (int i = 0; i < simNumber; i++)
             {
-                Game game = new Game(10, 10, new RndAttackPlayer(Player.PlayerColor.RED), new RandomPlayer(Player.PlayerColor.BLUE), rnd);
+                Game game = new Game(10, 10, new Chiller(Player.PlayerColor.RED), new RandomPlayer(Player.PlayerColor.BLUE), rnd);
                 game.StartGame();
 
                 if (game.blueCells == 0 && game.redCells == 0)
@@ -36,7 +37,7 @@ namespace ConsoleGolad
                     blueWins++;
             }
 
-            Console.WriteLine("Blue wins: " + blueWins + " , red wins: " + redWins + " , draws: " + draws);
+            Console.WriteLine("Red wins: " + redWins + " , blue wins: " + blueWins + " , draws: " + draws);
 
             Console.ReadKey();
         }
