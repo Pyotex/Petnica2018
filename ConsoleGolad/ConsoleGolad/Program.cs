@@ -20,7 +20,7 @@ namespace ConsoleGolad
 
             for (int i = 0; i < 1000; i++)
             {
-                Game game = new Game(10, 10, new AttackPlayer(Player.PlayerColor.RED), new RandomPlayer(Player.PlayerColor.BLUE), rnd);
+                Game game = new Game(10, 10, new RndAttackPlayer(Player.PlayerColor.RED), new RandomPlayer(Player.PlayerColor.BLUE), rnd);
                 game.StartGame();
 
                 if (game.blueCells == 0 && game.redCells == 0)

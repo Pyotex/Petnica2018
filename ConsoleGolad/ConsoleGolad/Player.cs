@@ -33,7 +33,7 @@ namespace ConsoleGolad
                 turns++;
                 penalty = Math.Max(0.75f, penalty - turns / 100f);
             }
-            
+
             bool finished = theChosenOne.OnCellTap();
             //if (!finished)
             //    PlayTurn();

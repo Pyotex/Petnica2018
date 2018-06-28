@@ -10,12 +10,12 @@ namespace ConsoleGolad
     {
         public enum CellState { RED, BLUE, DEAD, BORN_READ, BORN_BLUE }
 
-        public bool halfEmpty;
+        public bool halfEmpty; // True if the cell is being revived and only one other cell is sacrificed
 
         public int x, y, rows, columns;
 
-        public CellState cellState;
-        public CellState nextCellState;
+        public CellState cellState; //Current cell state
+        public CellState nextCellState; // The state after the next GoL iteration
 
         private Game game;
 
@@ -39,7 +39,7 @@ namespace ConsoleGolad
 
             MakeTurn(game.currentPlayer.playerColor, cellState);
 
-            game.CalculateNextForAllCells();
+            game.CalculateNextForAllCells(game.cells);
 
             return game.finishedMove;
         }

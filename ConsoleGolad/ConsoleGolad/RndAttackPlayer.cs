@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ConsoleGolad
 {
-    class AttackPlayer : Player // Only kills enemy cells
+    class RndAttackPlayer : Player // Only kills enemy cells
     {
 
-        public AttackPlayer(PlayerColor color) : base(color)
+        public RndAttackPlayer(PlayerColor color) : base(color)
         {
             playerColor = color;
         }

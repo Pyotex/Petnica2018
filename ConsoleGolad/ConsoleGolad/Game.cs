@@ -45,7 +45,7 @@ namespace ConsoleGolad
         public void StartGame()
         {
             SpawnCells();
-            CalculateNextForAllCells();
+            CalculateNextForAllCells(cells);
 
             currentPlayer.PlayTurn();
         }
@@ -114,7 +114,7 @@ namespace ConsoleGolad
             foreach (Cell cell in cells)
                 cell.NextState();
 
-            CalculateNextForAllCells();
+            CalculateNextForAllCells(cells);
 
             CheckGameStatus();
         }
@@ -140,7 +140,7 @@ namespace ConsoleGolad
                 GameOver(Player.PlayerColor.RED);
         }
 
-        public void CalculateNextForAllCells()
+        public void CalculateNextForAllCells(Cell[,] cells)
         {
             foreach (Cell cell in cells)
                 CalculateNextState(cell);
@@ -160,7 +160,7 @@ namespace ConsoleGolad
                     cell.nextCellState = Cell.CellState.DEAD;
                 else
                 {
-                    if (currentPlayer.shouldBePunished() && TurnMatchesColor(currentPlayer.playerColor, cell.cellState))
+                    if (rnd.NextDouble() > 0.9f || (currentPlayer.shouldBePunished() && TurnMatchesColor(currentPlayer.playerColor, cell.cellState)))
                         cell.nextCellState = Cell.CellState.DEAD;
                     else
                         cell.nextCellState = cell.cellState;
