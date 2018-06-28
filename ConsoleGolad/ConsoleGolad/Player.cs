@@ -13,7 +13,7 @@ namespace ConsoleGolad
 
         public PlayerColor playerColor;
         public float penalty = 1f;
-        protected float turns = 0;
+        protected float penaltyTurns = 0;
 
         public Game game;
         protected Cell theChosenOne;
@@ -28,10 +28,15 @@ namespace ConsoleGolad
             if (game.gameOver)
                 return;
 
-            if (Cell.CellAlive(theChosenOne.cellState))
+            if (Cell.CellAlive(theChosenOne.cellState) && !game.sacrifice)
             {
-                turns++;
-                penalty = Math.Max(0.75f, penalty - turns / 100f);
+                penaltyTurns++;
+                penalty = Math.Max(0.75f, penalty - penaltyTurns / 100f);
+            }
+            else
+            {
+                penaltyTurns = 0;
+                penalty = 1f;
             }
 
             bool finished = theChosenOne.OnCellTap();
@@ -43,6 +48,9 @@ namespace ConsoleGolad
 
         public bool shouldBePunished()
         {
+            if (!Program.penaltyActive)
+                return false;
+
             if (game.rnd.NextDouble() < penalty)
                 return false;
 

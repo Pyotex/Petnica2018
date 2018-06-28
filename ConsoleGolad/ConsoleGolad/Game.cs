@@ -160,7 +160,7 @@ namespace ConsoleGolad
                     cell.nextCellState = Cell.CellState.DEAD;
                 else
                 {
-                    if (rnd.NextDouble() > 0.9f || (currentPlayer.shouldBePunished() && TurnMatchesColor(currentPlayer.playerColor, cell.cellState)))
+                    if (RandomFactor() || (currentPlayer.shouldBePunished() && TurnMatchesColor(currentPlayer.playerColor, cell.cellState)))
                         cell.nextCellState = Cell.CellState.DEAD;
                     else
                         cell.nextCellState = cell.cellState;
@@ -179,6 +179,14 @@ namespace ConsoleGolad
                 else
                     cell.nextCellState = Cell.CellState.DEAD;
             }
+        }
+
+        bool RandomFactor()
+        {
+            if (!Program.randomActive)
+                return false;
+
+            return rnd.NextDouble() > 0.9f;
         }
 
         Cell.CellState RandomState()
@@ -240,7 +248,9 @@ namespace ConsoleGolad
 
         public void PrintCellGrid()
         {
-            return;
+            if (!Program.printCellGrid)
+                return;
+
             Console.Clear();
 
             for (int i = 0; i < rows; i++)
