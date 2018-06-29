@@ -41,7 +41,7 @@ namespace ConsoleGolad
                     penalty = 1f;
                 }
 
-                bool finished = theChosenOne.OnCellTap();
+                bool finished = theChosenOne.OnCellTap(false);
                 theChosenOne = null;
 
                 if (finished)
@@ -57,7 +57,19 @@ namespace ConsoleGolad
                 
         }
 
-        public bool shouldBePunished()
+        public void PredictFutureState(Cell cell)
+        {
+            cell.oldCellState = cell.cellState; // Save the old state
+            cell.OnCellTap(true); // Press on the cell
+
+            game.CheckFutureGameStatus(cell);
+
+            cell.cellState = cell.oldCellState;
+            game.CalculateNextForAllCells(game.cells);
+            game.CheckGameStatus();
+        }
+
+        public bool ShouldBePunished()
         {
             if (!Program.penaltyActive)
                 return false;

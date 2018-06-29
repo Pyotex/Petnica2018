@@ -26,7 +26,7 @@ namespace ConsoleGolad
 
             for (int i = 0; i < simNumber; i++)
             {
-                Game game = new Game(10, 10, new Chiller(Player.PlayerColor.RED), new RandomPlayer(Player.PlayerColor.BLUE), rnd);
+                Game game = new Game(10, 10, new HeDeathRatioPlayer(Player.PlayerColor.RED), new HeDeathMaxPlayer(Player.PlayerColor.BLUE), rnd);
                 game.StartGame();
 
                 if (game.blueCells == 0 && game.redCells == 0)

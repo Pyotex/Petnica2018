@@ -119,7 +119,7 @@ namespace ConsoleGolad
             CheckGameStatus();
         }
 
-        void CheckGameStatus()
+        public void CheckGameStatus()
         {
             redCells = 0;
             blueCells = 0;
@@ -138,6 +138,17 @@ namespace ConsoleGolad
                 GameOver(Player.PlayerColor.BLUE);
             else if (blueCells <= 0)
                 GameOver(Player.PlayerColor.RED);
+        }
+
+        public void CheckFutureGameStatus(Cell pressedCell)
+        {
+            foreach (Cell cell in cells)
+            {
+                if (cell.nextCellState == Cell.CellState.BLUE)
+                    pressedCell.blueCells++;
+                else if (cell.nextCellState == Cell.CellState.RED)
+                    pressedCell.redCells++;
+            }
         }
 
         public void CalculateNextForAllCells(Cell[,] cells)
@@ -160,7 +171,7 @@ namespace ConsoleGolad
                     cell.nextCellState = Cell.CellState.DEAD;
                 else
                 {
-                    if (RandomFactor() || (currentPlayer.shouldBePunished() && TurnMatchesColor(currentPlayer.playerColor, cell.cellState)))
+                    if (RandomFactor() || (currentPlayer.ShouldBePunished() && TurnMatchesColor(currentPlayer.playerColor, cell.cellState)))
                         cell.nextCellState = Cell.CellState.DEAD;
                     else
                         cell.nextCellState = cell.cellState;

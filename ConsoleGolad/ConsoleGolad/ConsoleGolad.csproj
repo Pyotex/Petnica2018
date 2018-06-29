@@ -43,6 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chiller.cs" />
+    <Compile Include="HeDeathMaxPlayer.cs" />
+    <Compile Include="HeDeathMinPlayer.cs" />
+    <Compile Include="HeDeathRatioPlayer.cs" />
     <Compile Include="RndAttackPlayer.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Game.cs" />

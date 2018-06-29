@@ -13,8 +13,10 @@ namespace ConsoleGolad
         public bool halfEmpty; // True if the cell is being revived and only one other cell is sacrificed
 
         public int x, y, rows, columns;
+        public int redCells, blueCells; // Game stats after predicting the future state of the board
 
         public CellState cellState; //Current cell state
+        public CellState oldCellState; //Used when predicting the future state of the board to preserve the old cell state
         public CellState nextCellState; // The state after the next GoL iteration
 
         private Game game;
@@ -28,7 +30,7 @@ namespace ConsoleGolad
             this.game = game;
         }
 
-        public bool OnCellTap()
+        public bool OnCellTap(bool dryRun)
         {
             if (game.finishedMove || game.gameOver)
                 return false;
@@ -38,6 +40,9 @@ namespace ConsoleGolad
                 return false;
 
             MakeTurn(game.currentPlayer.playerColor, cellState);
+
+            if (dryRun)
+                game.finishedMove = false;
 
             game.CalculateNextForAllCells(game.cells);
 
