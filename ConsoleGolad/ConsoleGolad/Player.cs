@@ -33,7 +33,7 @@ namespace ConsoleGolad
                 if (Cell.CellAlive(theChosenOne.cellState) && !game.sacrifice)
                 {
                     penaltyTurns++;
-                    penalty = Math.Max(Program.minPenalty, penalty - penaltyTurns / 10f);
+                    penalty = Math.Max(Program.minPenalty, penalty - penaltyTurns > 3 ? penaltyTurns : 0 / 10f);
                 }
                 else
                 {
@@ -65,6 +65,26 @@ namespace ConsoleGolad
             game.CheckFutureGameStatus(cell);
 
             cell.cellState = cell.oldCellState;
+            game.CalculateNextForAllCells(game.cells);
+            game.CheckGameStatus();
+        }
+
+        public void PredictFutureState(Cell cell, Cell sacrifice1, Cell sacrifice2)
+        {
+            cell.oldCellState = cell.cellState;
+            sacrifice1.oldCellState = sacrifice1.cellState;
+            sacrifice2.oldCellState = sacrifice2.cellState;
+
+            cell.OnCellTap(true);
+            sacrifice1.OnCellTap(true);
+            sacrifice2.OnCellTap(true);
+
+            game.CheckFutureGameStatus(cell);
+
+            cell.cellState = cell.oldCellState;
+            sacrifice1.cellState = sacrifice1.oldCellState;
+            sacrifice2.cellState = sacrifice2.oldCellState;
+
             game.CalculateNextForAllCells(game.cells);
             game.CheckGameStatus();
         }
