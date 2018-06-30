@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,12 @@ namespace ConsoleGolad
         public int redCells = 0;
         public int blueCells = 0;
 
+        public ArrayList aliveRedCells = new ArrayList();
+        public ArrayList aliveBlueCells = new ArrayList();
+
+        public bool running = false;
+        public int winner = 0;
+
         public Random rnd;
 
         public Game(int rows, int columns, Player redPlayer, Player bluePlayer, Random rnd)
@@ -42,12 +49,36 @@ namespace ConsoleGolad
             cells = new Cell[rows, columns];
         }
 
-        public void StartGame()
+        public void SetupGame()
         {
             SpawnCells();
-            CalculateNextForAllCells(cells);
 
-            currentPlayer.PlayTurn();
+            running = true;
+        }
+
+        public int RunGame()
+        {
+            while (running)
+            {
+                //PrintCellGrid();
+                //Thread.Sleep(500);
+
+                Calculations();
+
+                CheckGameStatus();
+
+                if (gameOver)
+                    return winner;
+
+                currentPlayer.PlayTurn();
+                currentPlayer = currentPlayer == redPlayer ? bluePlayer : redPlayer;
+
+                // TODO: GoL iteration
+                NextStep();
+            }
+
+            // Should never be called, hopefully
+            return 0;
         }
 
         void SpawnCells()
@@ -61,6 +92,16 @@ namespace ConsoleGolad
                     cells[i, j] = cell;
 
                     cell.cellState = RandomState();
+
+                    if (Cell.CellAlive(cell.cellState) && cell.cellState == Cell.CellState.RED)
+                    {
+                        redCells++;
+                        aliveRedCells.Add(cell);
+                    } else if (Cell.CellAlive(cell.cellState) && cell.cellState == Cell.CellState.BLUE)
+                    {
+                        blueCells++;
+                        aliveBlueCells.Add(cell);
+                    }
                 }
             }
 
@@ -77,61 +118,86 @@ namespace ConsoleGolad
                     Cell cell = new Cell(newCol, newRow, rows, columns, this);
 
                     cells[newRow, newCol] = cell;
-
                     cell.cellState = ReverseState(cells[i, j].cellState);
 
-                    cell.x = newCol;
-                    cell.y = newRow;
-
                     newCol++;
+
+                    if (Cell.CellAlive(cell.cellState) && cell.cellState == Cell.CellState.RED)
+                    {
+                        redCells++;
+                        aliveRedCells.Add(cell);
+                    }
+                    else if (Cell.CellAlive(cell.cellState) && cell.cellState == Cell.CellState.BLUE)
+                    {
+                        blueCells++;
+                        aliveBlueCells.Add(cell);
+                    }
                 }
 
                 newRow++;
             }
-
-            PrintCellGrid();
         }
 
-        public void FinishMove()
+        void Calculations()
         {
-            PrintCellGrid();
-            //Thread.Sleep(16);
+            aliveBlueCells.Clear();
+            aliveRedCells.Clear();
 
-            currentPlayer = currentPlayer == redPlayer ? bluePlayer : redPlayer;
-
-            finishedMove = false;
-
-            NextStep();
-
-            if (gameOver)
-                return;
-
-            currentPlayer.PlayTurn();
-        }
-
-        void NextStep()
-        {
-            foreach (Cell cell in cells)
-                cell.NextState();
-
-            CalculateNextForAllCells(cells);
-
-            CheckGameStatus();
-        }
-
-        public void CheckGameStatus()
-        {
             redCells = 0;
             blueCells = 0;
 
             foreach (Cell cell in cells)
             {
-                if (cell.cellState == Cell.CellState.BLUE)
-                    blueCells++;
-                else if (cell.cellState == Cell.CellState.RED)
-                    redCells++;
-            }
+                // Calculate temp next state based on current known neighbour count
+                CalculateNextState(cell);
 
+                // if the cell is alive, increase the counter for neighbour cells and calculate their temp next state
+                if (Cell.CellAlive(cell.cellState))
+                {
+                    if (cell.cellState == Cell.CellState.RED)
+                    {
+                        redCells++;
+                        aliveRedCells.Add(cell);
+                    }
+                    else if (cell.cellState == Cell.CellState.BLUE)
+                    {
+                        blueCells++;
+                        aliveBlueCells.Add(cell);
+                    }
+                }
+
+                // Update neighbour cells
+                for (int i = cell.y - 1; i <= cell.y + 1; i++)
+                {
+                    for (int j = cell.x - 1; j <= cell.x + 1; j++)
+                    {
+                        if (j >= 0 && j < columns && i >= 0 && i < rows && Cell.CellAlive(cell.cellState))
+                        {
+                            if (cell.cellState == Cell.CellState.RED)
+                                cells[i, j].redNeighbours++;
+                            else if (cell.cellState == Cell.CellState.BLUE)
+                                cells[i, j].blueNeighbours++;
+
+                            // TODO: calculateNextState
+                            CalculateNextState(cells[i, j]);
+                        }
+                    }
+                }
+            }
+        }
+
+        void NextStep()
+        {
+            foreach (Cell cell in cells)
+            {
+                cell.NextState();
+                cell.blueNeighbours = 0;
+                cell.redNeighbours = 0;
+            }
+        }
+
+        public void CheckGameStatus()
+        {
             if (redCells == 0 && blueCells == 0)
                 GameOver();
             else if (redCells <= 0)
@@ -159,11 +225,7 @@ namespace ConsoleGolad
 
         public void CalculateNextState(Cell cell)
         {
-            int[] neighbourValues = cell.GetNeighbourCount();
-
-            int red = neighbourValues[0];
-            int blue = neighbourValues[1];
-            int neighbours = neighbourValues[2];
+            int neighbours = cell.redNeighbours + cell.blueNeighbours;
 
             if (Cell.CellAlive(cell.cellState))
             {
@@ -182,7 +244,7 @@ namespace ConsoleGolad
             {
                 if (neighbours == 3)
                 {
-                    if (red > blue)
+                    if (cell.redNeighbours > cell.blueNeighbours)
                         cell.nextCellState = Cell.CellState.RED;
                     else
                         cell.nextCellState = Cell.CellState.BLUE;
@@ -239,7 +301,7 @@ namespace ConsoleGolad
             PrintCellGrid();
 
             gameOver = true;
-            //Console.WriteLine("It's a draw!");
+            winner = 0;
         }
 
         public void GameOver(Player.PlayerColor color)
@@ -248,13 +310,9 @@ namespace ConsoleGolad
 
             gameOver = true;
             if (color == Player.PlayerColor.BLUE)
-            {
-                //Console.WriteLine("Blue player won!");
-            }
+                winner = 2;
             else
-            {
-                //Console.WriteLine("Red player won!");
-            }
+                winner = 1;
         }
 
         public void PrintCellGrid()

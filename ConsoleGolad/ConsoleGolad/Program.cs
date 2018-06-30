@@ -10,7 +10,7 @@ namespace ConsoleGolad
     {
         public static Random rnd;
 
-        public static int simNumber = 30000;
+        public static int simNumber = 1;
         public static float minPenalty = 0.5f;
         public static bool penaltyActive = false;
         public static bool randomActive = true;
@@ -20,24 +20,13 @@ namespace ConsoleGolad
         {
             rnd = new Random((Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds);
 
-            int blueWins = 0;
-            int redWins = 0;
-            int draws = 0;
-
             for (int i = 0; i < simNumber; i++)
             {
-                Game game = new Game(10, 10, new HeDeathRatioPlayer(Player.PlayerColor.RED), new RandomPlayer(Player.PlayerColor.BLUE), rnd);
-                game.StartGame();
+                Game game = new Game(100, 100, new RandomPlayer(Player.PlayerColor.RED), new RandomPlayer(Player.PlayerColor.BLUE), rnd);
+                game.SetupGame();
 
-                if (game.blueCells == 0 && game.redCells == 0)
-                    draws++;
-                else if (game.blueCells == 0)
-                    redWins++;
-                else if (game.redCells == 0)
-                    blueWins++;
+                Console.WriteLine(game.RunGame());
             }
-
-            Console.WriteLine("Red wins: " + redWins + " , blue wins: " + blueWins + " , draws: " + draws);
 
             Console.ReadKey();
         }

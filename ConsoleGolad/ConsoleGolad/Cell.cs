@@ -19,6 +19,9 @@ namespace ConsoleGolad
         public CellState oldCellState; //Used when predicting the future state of the board to preserve the old cell state
         public CellState nextCellState; // The state after the next GoL iteration
 
+        public int redNeighbours = 0;
+        public int blueNeighbours = 0;
+
         private Game game;
 
         public Cell(int x, int y, int rows, int columns, Game game)
@@ -32,9 +35,6 @@ namespace ConsoleGolad
 
         public bool OnCellTap(bool dryRun)
         {
-            if (game.finishedMove || game.gameOver)
-                return false;
-
             //Disable clicking on cells that will be born in the next turn
             if (cellState == CellState.DEAD && (nextCellState == CellState.RED || nextCellState == CellState.BLUE))
                 return false;

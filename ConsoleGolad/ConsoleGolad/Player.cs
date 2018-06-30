@@ -25,9 +25,6 @@ namespace ConsoleGolad
 
         public virtual void PlayTurn()
         {
-            if (game.gameOver)
-                return;
-
             if (theChosenOne != null)
             {
                 if (Cell.CellAlive(theChosenOne.cellState) && !game.sacrifice)
@@ -41,18 +38,13 @@ namespace ConsoleGolad
                     penalty = 1f;
                 }
 
-                bool finished = theChosenOne.OnCellTap(false);
+                theChosenOne.OnCellTap(false);
                 theChosenOne = null;
-
-                if (finished)
-                    game.FinishMove();
             }
             else
             {
                 penaltyTurns++;
                 penalty = Math.Max(Program.minPenalty, penalty - penaltyTurns / 10f);
-
-                game.FinishMove();
             }
                 
         }
