@@ -73,7 +73,7 @@ namespace ConsoleGolad
                 currentPlayer.PlayTurn();
                 currentPlayer = currentPlayer == redPlayer ? bluePlayer : redPlayer;
 
-                // TODO: GoL iteration
+                // GoL iteration
                 NextStep();
             }
 
@@ -178,7 +178,7 @@ namespace ConsoleGolad
                             else if (cell.cellState == Cell.CellState.BLUE)
                                 cells[i, j].blueNeighbours++;
 
-                            // TODO: calculateNextState
+                            // calculateNextState
                             CalculateNextState(cells[i, j]);
                         }
                     }
