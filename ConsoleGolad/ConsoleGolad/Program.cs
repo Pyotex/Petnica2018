@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,8 +27,16 @@ namespace ConsoleGolad
 
             for (int i = 0; i < simNumber; i++)
             {
-                Game game = new Game(10, 10, new HeDeathRatioPlayer(Player.PlayerColor.RED), new RandomPlayer(Player.PlayerColor.BLUE), rnd);
+
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+
+                Game game = new Game(100, 100, new RandomPlayer(Player.PlayerColor.RED), new RandomPlayer(Player.PlayerColor.BLUE), rnd);
                 game.StartGame();
+
+                stopwatch.Stop();
+
+                Console.WriteLine(stopwatch.ElapsedMilliseconds);
 
                 if (game.blueCells == 0 && game.redCells == 0)
                     draws++;
