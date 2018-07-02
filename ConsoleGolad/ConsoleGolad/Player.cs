@@ -56,29 +56,29 @@ namespace ConsoleGolad
 
             game.CheckFutureGameStatus(cell);
 
-            cell.cellState = cell.oldCellState;
-            game.CalculateNextForAllCells(game.cells);
-            game.CheckGameStatus();
+            //cell.cellState = cell.oldCellState;
+            //game.CalculateNextForAllCells(game.cells);
+            //game.CheckGameStatus();
         }
 
         public void PredictFutureState(Cell cell, Cell sacrifice1, Cell sacrifice2)
         {
-            cell.oldCellState = cell.cellState;
-            sacrifice1.oldCellState = sacrifice1.cellState;
-            sacrifice2.oldCellState = sacrifice2.cellState;
+            //cell.oldCellState = cell.cellState;
+            //sacrifice1.oldCellState = sacrifice1.cellState;
+            //sacrifice2.oldCellState = sacrifice2.cellState;
 
-            cell.OnCellTap(true);
-            sacrifice1.OnCellTap(true);
-            sacrifice2.OnCellTap(true);
+            //cell.OnCellTap(true);
+            //sacrifice1.OnCellTap(true);
+            //sacrifice2.OnCellTap(true);
 
-            game.CheckFutureGameStatus(cell);
+            //game.CheckFutureGameStatus(cell);
 
-            cell.cellState = cell.oldCellState;
-            sacrifice1.cellState = sacrifice1.oldCellState;
-            sacrifice2.cellState = sacrifice2.oldCellState;
+            //cell.cellState = cell.oldCellState;
+            //sacrifice1.cellState = sacrifice1.oldCellState;
+            //sacrifice2.cellState = sacrifice2.oldCellState;
 
-            game.CalculateNextForAllCells(game.cells);
-            game.CheckGameStatus();
+            //game.CalculateNextForAllCells(game.cells);
+            //game.CheckGameStatus();
         }
 
         public bool ShouldBePunished()

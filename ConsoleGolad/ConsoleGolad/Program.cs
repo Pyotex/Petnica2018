@@ -23,16 +23,16 @@ namespace ConsoleGolad
 
             for (int i = 0; i < simNumber; i++)
             {
-                //Stopwatch stopWatch = new Stopwatch();
-                //stopWatch.Start();
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
 
                 Game game = new Game(100, 100, new RandomPlayer(Player.PlayerColor.RED), new RandomPlayer(Player.PlayerColor.BLUE), rnd);
                 game.SetupGame();
 
-                //stopWatch.Stop();
-                //Console.WriteLine("Duration: {0}", stopWatch.ElapsedMilliseconds);
-
                 Console.WriteLine(game.RunGame());
+
+                stopWatch.Stop();
+                Console.WriteLine("Duration: {0}", stopWatch.ElapsedMilliseconds);
             }
 
             Console.ReadKey();

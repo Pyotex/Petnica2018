@@ -44,8 +44,6 @@ namespace ConsoleGolad
             if (dryRun)
                 game.finishedMove = false;
 
-            game.CalculateNextForAllCells(game.cells);
-
             return game.finishedMove;
         }
 
@@ -118,9 +116,8 @@ namespace ConsoleGolad
 
         public int[] GetNeighbourCount()
         {
-            int red = 0;
-            int blue = 0;
-            int neighbours = 0;
+            redNeighbours = 0;
+            blueNeighbours = 0;
 
             for (int i = y - 1; i <= y + 1; i++)
             {
@@ -130,17 +127,16 @@ namespace ConsoleGolad
                     {
                         if (CellAlive(game.cells[i, j].cellState) && (j != x || i != y))
                         {
-                            neighbours++;
                             if (game.cells[i, j].cellState == CellState.RED)
-                                red++;
+                                redNeighbours++;
                             else if (game.cells[i, j].cellState == CellState.BLUE)
-                                blue++;
+                                blueNeighbours++;
                         }
                     }
                 }
             }
 
-            return new int[] { red, blue, neighbours };
+            return new int[] { redNeighbours, blueNeighbours, redNeighbours + blueNeighbours };
         }
 
         public static bool CellAlive(CellState state)

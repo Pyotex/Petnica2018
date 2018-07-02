@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -60,9 +61,6 @@ namespace ConsoleGolad
         {
             while (running)
             {
-                //PrintCellGrid();
-                //Thread.Sleep(500);
-
                 Calculations();
 
                 CheckGameStatus();
@@ -208,13 +206,7 @@ namespace ConsoleGolad
 
         public void CheckFutureGameStatus(Cell pressedCell)
         {
-            foreach (Cell cell in cells)
-            {
-                if (cell.nextCellState == Cell.CellState.BLUE)
-                    pressedCell.blueCells++;
-                else if (cell.nextCellState == Cell.CellState.RED)
-                    pressedCell.redCells++;
-            }
+            // TODO: Think of an optimized way
         }
 
         public void CalculateNextForAllCells(Cell[,] cells)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,9 @@ namespace ConsoleGolad
                 if (Game.TurnMatchesColor(playerColor, cell.cellState))
                     myAliveCells.Add(cell);
 
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             foreach (Cell cell in game.cells)
             {
                 if (!Cell.CanClick(cell))
@@ -47,21 +51,24 @@ namespace ConsoleGolad
 
                 if (playerColor == PlayerColor.RED)
                 {
-                    if ((double) cell.redCells / (cell.blueCells == 0 ? 1 : cell.blueCells) > ratio)
+                    if ((double)cell.redCells / (cell.blueCells == 0 ? 1 : cell.blueCells) > ratio)
                     {
-                        ratio = (double) cell.redCells / cell.blueCells;
+                        ratio = (double)cell.redCells / cell.blueCells;
                         theChosenOne = cell;
                     }
                 }
                 else
                 {
-                    if ((double) cell.blueCells / (cell.redCells == 0 ? 1 : cell.redCells) > ratio)
+                    if ((double)cell.blueCells / (cell.redCells == 0 ? 1 : cell.redCells) > ratio)
                     {
-                        ratio = (double) cell.blueCells / cell.redCells;
+                        ratio = (double)cell.blueCells / cell.redCells;
                         theChosenOne = cell;
                     }
                 }
             }
+
+            stopwatch.Stop();
+            Console.WriteLine("Ran for {0} milliseconds", stopwatch.ElapsedMilliseconds);
 
             if (theChosenOne.cellState != Cell.CellState.DEAD)
                 base.PlayTurn();
