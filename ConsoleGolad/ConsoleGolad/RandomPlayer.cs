@@ -20,14 +20,13 @@ namespace ConsoleGolad
             ArrayList myAliveCells = new ArrayList();
             ArrayList allAliveCells = new ArrayList();
 
-            foreach (Cell cell in game.cells)
-            {
-                if (Game.TurnMatchesColor(playerColor, cell.cellState))
-                    myAliveCells.Add(cell);
+            if (playerColor == PlayerColor.BLUE)
+                myAliveCells = game.aliveBlueCells;
+            else
+                myAliveCells = game.aliveRedCells;
 
-                if (Cell.CellAlive(cell.cellState))
-                    allAliveCells.Add(cell);
-            }
+            allAliveCells.AddRange(game.aliveBlueCells);
+            allAliveCells.AddRange(game.aliveRedCells);
 
 
             if (myAliveCells.Count < 2)

@@ -31,6 +31,7 @@ namespace ConsoleGolad
 
         public bool running = false;
         public int winner = 0;
+        public int turns = 0;
 
         public Random rnd;
 
@@ -61,6 +62,8 @@ namespace ConsoleGolad
         {
             while (running)
             {
+                turns++;
+
                 Calculations();
 
                 CheckGameStatus();

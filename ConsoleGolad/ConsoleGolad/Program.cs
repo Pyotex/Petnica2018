@@ -11,7 +11,7 @@ namespace ConsoleGolad
     {
         public static Random rnd;
 
-        public static int simNumber = 100000;
+        public static int simNumber = 100;
         public static float minPenalty = 0.5f;
         public static bool penaltyActive = false;
         public static bool randomActive = true;
@@ -23,16 +23,11 @@ namespace ConsoleGolad
 
             for (int i = 0; i < simNumber; i++)
             {
-                Stopwatch stopWatch = new Stopwatch();
-                stopWatch.Start();
-
                 Game game = new Game(100, 100, new RandomPlayer(Player.PlayerColor.RED), new RandomPlayer(Player.PlayerColor.BLUE), rnd);
                 game.SetupGame();
 
                 Console.WriteLine(game.RunGame());
-
-                stopWatch.Stop();
-                Console.WriteLine("Duration: {0}", stopWatch.ElapsedMilliseconds);
+                Console.WriteLine("Game ran for {0} turns", game.turns);
             }
 
             Console.ReadKey();
